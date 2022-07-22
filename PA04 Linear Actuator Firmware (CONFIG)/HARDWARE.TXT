@@ -1,0 +1,12 @@
+rotor=491
+adc1z=516
+adc2z=516
+adc3z=514
+encRef=12648685
+rPos=1024
+ePos=64591
+qP=2000
+qI=200
+dP=2000
+dI=200
+sNum="10117710"

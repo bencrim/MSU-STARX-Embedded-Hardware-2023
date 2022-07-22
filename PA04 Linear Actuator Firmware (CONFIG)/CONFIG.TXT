@@ -1,0 +1,165 @@
+# CONFIG.TXT
+#
+# Ultra Motion
+# Servo Cylinder
+# Firmware: 0.963
+# Serial#: 10117710
+#
+# For information about configuration, download the Servo Cylinder user manual:
+# https://ultramotion.com/servo_cylinder/ultra-motion-servo-cylinder-manual.pdf
+
+# Note: All text following a "#" symbol is a comment. 
+# Comments are ignored by the Servo Cylinder.
+
+# Interface Mode (ifMode)
+# 0 = Human Mode
+# 1 = MachineMode1
+# 2 = MachineMode2 (Requires Checksums)
+ifMode = 0
+
+# RS232 Serial Baud Rate
+baud = 115200
+
+# Operating Modes (opMode)
+# 0 = CLI mode
+# 1 = toggle mode
+# 2 = proportional mode
+# 3 = incremental mode
+# 4 = pre-set position mode
+opMode = 1
+
+# Error Mode (Actuator Hardware Protection Feature)
+errMode = 1
+
+# Toggle mode configuration (tmCFG)
+# 0 = speed and torque set in config file
+# 1 = voltage sets speed, torque set in config file
+# 2 = current sets speed, torque set in config file
+# 3 = speed set in config file, voltage sets torque
+# 4 = speed set in config file, current sets torque
+tmCFG = 1
+
+# Proportional mode configuration (pmCFG)
+# 0 = position command set by 1-2ms pulse input
+# 1 = position command set by analog voltage input
+# 2 = position command set by analog current input
+pmCFG = 1
+
+# Incremental mode configuration (imCFG)
+# 0 = Step and direction input format
+# 1 = Step up, Step down input format
+# 2 = A/B quadrature input format
+imCFG = 0
+
+# Retracted software endstop (must be >rPos (Hard Endstop) in HARDWARE.TXT)
+spMin = 2048
+
+# Extended software endstop (must be <ePos (Hard Endstop) in HARDWARE.TXT)
+spMax = 63567
+
+# PID gains
+kp = 1200
+ki = 250000
+kd = 10000
+
+# Max torque command permitted (1 - 32767)
+maxTorq = 10000
+
+# Min value for torque in toggle mode with analog torque control
+mtMin = 8000
+
+# Max speed in trajectory commands, toggle, or preset position mode
+maxSpeed = 4294967
+
+# Min value for speed in toggle mode with analog speed control
+msMin = 200000
+
+# Acceleration rate for trajectory commands, toggle, or preset position mode
+accel = 25770
+
+# Toggle mode "stop" setting
+# 0 = snap to position
+# 1 = decelerate at accel
+# 2 = brake for 100 ms, then snap to position
+stopMode = 1
+
+# 1-2ms pulse input range (units = 1/60,000 ms):
+pMin = 66000
+pMax = 115000
+
+# 1-2ms pulse filter (lower = more filtration):
+pFilter = 3000
+
+# Analog voltage input range (use unit converter): 
+vMin = 33114 # ~0V
+vMax = 43109 # ~5V
+
+# Analog voltage filter (lower = more filtration):
+vFilter = 200
+
+# 4-20 mA input range (use unit converter):
+cMin = 3143 # ~4mA
+cMax= 64106 # ~20mA
+
+# Analog Current filter (lower = more filtration):
+cFilter = 2000
+
+# Number of encoder counts per input increment (Incremental Mode):
+stepSize = 1
+
+# Preset position mode time delay before recognizing change in input 
+# state as valid:
+posTime = 25
+
+# Position 1 (IN1=Off, IN2=Off):
+Pos1 = 9175
+
+# Position 2 (IN1=On, IN2=Off):
+Pos2 = 5120
+
+# Position 3 (IN1=Off, IN2=On):
+Pos3 = 7168
+
+# Position 3 (IN1=On, IN2=On):
+Pos4 = 9216
+
+# Configurable GPIO pins (DIO1 and DIO2):
+# See manual (url above) for information on all input/output capabilities
+
+# DIO1 Config
+ioPin1 = 4
+ioBit1 = 0
+ioPWM1 = 1
+
+# DIO2 Config
+ioPin2 = 4
+ioBit2 = 0
+ioPWM2 = 0
+
+# Status bit thresholds
+atTarg = 63     # Error threshold for "at target position"
+ovErrP = 8191   # Error threshold for "position error over threshold"
+ovSpeed = 8     # Speed threshold for "speed over threshold"
+ovTorq = 8000   # Absoloute torque threshold for "torque over threshold"
+posGrtr = 32767 # Threshold for "position greater than threshold"
+posLess = 32768 # Threshold for "position less than threshold 
+ovTemp = 32765  # Over temperature threshold
+
+# Data streaming over serial. Consult manual for streaming variables.
+# 1 = start data streaming at power-up
+# 0 = data streaming off
+sFlag = 0
+
+#Timer interval between streamed data points (Max = 65535, about 3.576Hz)
+#There are 234375 timer counts per second 
+sTime = 23438 # ~10Hz
+
+# Column 1
+strX1 = 1
+
+# Column 2
+strX2 = 0
+
+# Column 3
+strX3 = 0
+
