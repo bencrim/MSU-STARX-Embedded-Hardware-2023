@@ -1,0 +1,84 @@
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
+
+Adafruit_MPU6050 mpu1;
+Adafruit_MPU6050 mpu2;
+double Acc1[3]; double Acc2[3];
+float Angle1[3]; int Angle2[3]; 
+double theta1[3]; double theta2[3];
+int minVal=265;
+int maxVal=402;
+enum axis{x,y,z};
+void setup() 
+{
+  Serial.begin(9600);
+  pinMode(LED_BUILTIN,OUTPUT);
+  if (!mpu1.begin(0x68)) 
+  {
+    digitalWrite(LED_BUILTIN,HIGH); //built in led high means the arduino failed to recognize the gyro
+    Serial.println("MPU1 not found");
+    while (1) 
+    {
+      delay(10);
+    }
+  }
+  else  digitalWrite(LED_BUILTIN,LOW); //led low means gyro is connected properly
+  //range settings
+  mpu1.setAccelerometerRange(MPU6050_RANGE_2_G);
+  mpu1.setGyroRange(MPU6050_RANGE_1000_DEG);
+  mpu1.setFilterBandwidth(MPU6050_BAND_21_HZ);
+    if (!mpu2.begin(0x69)) 
+  {
+    digitalWrite(LED_BUILTIN,HIGH); //built in led high means the arduino failed to recognize the gyro
+    Serial.println("MPU2 not found");
+    while (1) 
+    {
+      delay(10);
+    }
+  }
+  else  digitalWrite(LED_BUILTIN,LOW); //led low means gyro is connected properly
+  //range settings
+  mpu2.setAccelerometerRange(MPU6050_RANGE_2_G);
+  mpu2.setGyroRange(MPU6050_RANGE_1000_DEG);
+  mpu2.setFilterBandwidth(MPU6050_BAND_21_HZ);
+}
+
+void loop() 
+{
+  sensors_event_t a1, g1, temp1;
+  mpu1.getEvent(&a1, &g1, &temp1);
+  sensors_event_t a2, g2, temp2;
+  mpu2.getEvent(&a2, &g2, &temp2);
+  Acc1[x] = a1.gyro.x;
+  Acc1[y] = a1.gyro.y;
+  Acc1[z] = a1.gyro.z;
+  Acc2[x] = a2.gyro.x;
+  Acc2[y] = a2.gyro.y;
+  Acc2[z] = a2.gyro.z;
+  Serial.println(Acc1[x]);
+  Serial.println(Acc1[y]);
+  Serial.println(Acc1[z]);
+  //angleXYZ();
+  
+  //Serial.print(g1.gyro.y); Serial.print("  "); Serial.println(g2.gyro.y);
+}
+void angleXYZ()
+{
+  Angle1[x] = map(Acc1[x],minVal,maxVal,-90,90);
+  Angle1[y] = map(Acc1[y],minVal,maxVal,-90,90);
+  Angle1[z] = map(Acc1[z],minVal,maxVal,-90,90);
+  Angle2[x] = map(Acc2[x],minVal,maxVal,-90,90);
+  Angle2[y] = map(Acc2[y],minVal,maxVal,-90,90);
+  Angle2[z] = map(Acc2[z],minVal,maxVal,-90,90);
+  theta1[x] = RAD_TO_DEG * (atan2(-Angle1[y], -Angle1[z])+PI);
+  theta1[y] = RAD_TO_DEG * (atan2(-Angle1[x], -Angle1[z])+PI);
+  theta1[z] = RAD_TO_DEG * (atan2(-Angle1[y], -Angle1[x])+PI);
+  theta2[x] = RAD_TO_DEG * (atan2(-Angle2[y], -Angle2[z])+PI);
+  theta2[y] = RAD_TO_DEG * (atan2(-Angle2[x], -Angle2[z])+PI);
+  theta2[z] = RAD_TO_DEG * (atan2(-Angle2[y], -Angle2[x])+PI);
+  
+  Serial.print("Angle x: ");
+  Serial.println(theta1[x]);
+  
+}

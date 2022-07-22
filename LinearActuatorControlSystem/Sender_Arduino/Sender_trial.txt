@@ -1,0 +1,65 @@
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
+Adafruit_MPU6050 mpu;
+
+byte startMarker = 0xF0;
+byte endMarker = 0x0F;
+float value;
+char buff[24];
+String myString = "";     // empty string
+byte *ArrayOfFourBytes;
+byte *pointer;
+float RealNumber = 150.63;
+void setup() 
+{
+  Serial.begin(9600); //bit transfer rate (Bd) between PC and UNO
+  pinMode(LED_BUILTIN,OUTPUT);
+  if (!mpu.begin()) 
+  {
+    digitalWrite(LED_BUILTIN,HIGH); //built in led high means the arduino failed to recognize the gyro
+    while (1) 
+    {
+      delay(10);
+    }
+  }
+  else  digitalWrite(LED_BUILTIN,LOW);
+
+  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  mpu.setGyroRange(MPU6050_RANGE_1000_DEG);
+  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);    
+  
+}//setup
+
+void loop() 
+{
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+
+  ArrayOfFourBytes = (byte*) & g.gyro.y;
+  pointer = ArrayOfFourBytes;
+  Serial.write(startMarker);
+  while(pointer < ArrayOfFourBytes + 4)
+  {
+    Serial.write(*pointer);
+    pointer++;
+  }
+  Serial.write(endMarker);
+
+  
+  //----- Part 1: Send a float
+//  value = g.gyro.y;
+//  myString = String(value,6);
+//  myString += '\n;
+//  writeString(myString);
+  //Serial.println(myString);
+  
+}//loop
+
+void writeString(String stringData) { // Used to serially push out a String with Serial.write()
+
+  for (int i = 0; i < stringData.length(); i++)
+  {
+    Serial.write(stringData[i]);   // Push each char 1 by 1 on each loop pass
+  }
+}// end writeString
