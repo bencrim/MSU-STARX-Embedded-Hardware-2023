@@ -1,5 +1,7 @@
 # MSU STARX Embedder Hardware Team GitHub 2023
 
+Below is a beginner walkthrough on how to install the Arduino IDE and the libraries we will be using in it.
+
 1. Download and install Arduino IDE (https://www.arduino.cc/en/software)
 2. Download the GitHub repository and remember where you download it to. (https://github.com/UncommonCandy/MSU-STARX-Embedded-Hardware-2023)
 3. Locate the GitHub zip file you just downloaded and extract it somewhere you can access. Then open the extracted GitHub folder and navigate to the libraries folder under STARX Arduino "...\MSU STARX Revised GitHub\STARX Arduino\libraries".
