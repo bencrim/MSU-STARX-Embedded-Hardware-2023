@@ -10,7 +10,8 @@ int16_t AcX2,AcY2,AcZ2,Tmp2,GyX2,GyY2,GyZ2;
       Wire.beginTransmission(MPU1);
       Wire.write(0x6B);// PWR_MGMT_1 register 
       Wire.write(0); // set to zero (wakes up the MPU-6050)
-      Wire.endTransmission(true);Wire.begin(); 
+      Wire.endTransmission(true);
+      Wire.begin(); 
       Wire.beginTransmission(MPU2);
       Wire.write(0x6B);// PWR_MGMT_1 register 
       Wire.write(0); // set to zero (wakes up the MPU-6050)
