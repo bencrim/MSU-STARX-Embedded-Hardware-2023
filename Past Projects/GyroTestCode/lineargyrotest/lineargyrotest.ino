@@ -45,7 +45,7 @@ bool hardstop = true;
 //PID
 double currentSpeed, currentSpeed_abs, outputSpeed ,desiredSpeed,desiredSpeed2;
 double displacement; //position variable
-double HP = 500, HI = 0.5, HD = 0;
+double HP = 50, HI = 20, HD = 60;
 PID loadCompensator(&currentSpeed_abs, &outputSpeed ,&desiredSpeed, HP, HI, HD,P_ON_M, DIRECT);
 int mode = 0; //keeps track if PID is on or off
 
@@ -85,7 +85,7 @@ void setup()
   mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
   mpu.setGyroRange(MPU6050_RANGE_1000_DEG);
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
-  offsetSwitch(7);
+  offsetSwitch(5);
 }
 
 void loop() 
@@ -117,7 +117,7 @@ void loop()
   desiredSpeed = abs(geometry(corrected_Y, displacement));
   desiredSpeed2 = geometry(corrected_Y, displacement);
   Mdirection(corrected_Y);
-  PIDtoggle(hardstop);
+  //PIDtoggle(hardstop);
   loadCompensator.Compute();
   analogWrite(ANV, outputSpeed);
   Serial.print(desiredSpeed2); Serial.print(","); Serial.println(currentSpeed); //Serial.print(","); Serial.print(displacement); Serial.print(","); Serial.println(corrected_Y);
@@ -131,14 +131,14 @@ void Mdirection(float dir)
   if(dir > 0)
   {
     //extend
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, HIGH);
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
   }
   else if(dir < 0)
   {
     //retract
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
   }
   else
   {
