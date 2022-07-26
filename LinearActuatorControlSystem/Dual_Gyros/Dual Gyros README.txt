@@ -7,7 +7,7 @@ could take in multiple sources of data "at once". The code was borrowed from Git
 after seeing a YouTube video showing two MPU-6050 gyroscopes connected to one Arduino Board.
 
 This program switches which gyro it is recieving data from in the void loop by calling a function assigned to 
-each gyro. The way the functions distinguish between gryos is by having different addresses inputted in the calling line.
+each gyro. The way the functions distinguish between gryos is by having different addresses inputted in function parameter.
 This can be seen in the second line, where MPU2 is assigned to 0x69 and MPU1 is assigned to 0x68. These values
 are then used when the function is called in the void loop.
 
