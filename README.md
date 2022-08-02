@@ -3,7 +3,7 @@
 Below is a beginner walkthrough on how to install the Arduino IDE and the libraries we will be using in it.
 
 1. Download and install Arduino IDE (https://www.arduino.cc/en/software)
-2. Download the GitHub repository and remember where you download it to. (https://github.com/UncommonCandy/MSU-STARX-Embedded-Hardware-2023)
+2. Download the GitHub repository and remember where you download it to. (https://github.com/UncommonCandy/MSU-STARX-Embedded-Hardware-2023) This can be done by clicking the green "Code" button above and downloading the zip file.
 3. Locate the GitHub zip file you just downloaded and extract it somewhere you can access. Then open the extracted GitHub folder and navigate to the libraries folder under STARX Arduino "...\MSU STARX Revised GitHub\STARX Arduino\libraries".
 4. Locate the file location for the Arduino IDE you just installed, then open the libraries folder. Mine defaulted to my C Drive under Program Files (x86). "C:\Program Files (x86)\Arduino\libraries".
 5. With both library folders open, copy all folders from the "...\MSU STARX Revised GitHub\STARX Arduino\libraries" folder into the "...\Arduino\libraries" folder. There should already be some folders in the "...\Arduino\libraries" folder, so when it prompts you to replace them, click yes.
