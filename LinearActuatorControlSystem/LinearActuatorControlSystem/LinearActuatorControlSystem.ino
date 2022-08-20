@@ -42,10 +42,10 @@ double corrected_X[2], corrected_Y[2], corrected_Z[2]; //variables that store th
 bool lock_in_place = false;
 
 //PID_runtime
-double currentSpeed, currentSpeed_abs, outputSpeed ,desiredSpeed, desiredSpeed2;
+double currentSpeed, currentSpeed_abs, outputSpeed, desiredSpeed, desiredSpeed2;
 double displacement; //position variable
 double HP = 50, HI = 20, HD = 0;
-PID loadCompensator(&currentSpeed_abs, &outputSpeed ,&desiredSpeed, HP, HI, HD,P_ON_M, DIRECT);
+PID loadCompensator(&currentSpeed_abs, &outputSpeed ,&desiredSpeed, HP, HI, HD, P_ON_M, DIRECT);
 bool runtime_status = true; //keeps track if PID is on or off
 
 /*
@@ -56,7 +56,7 @@ This PID is needed as this PID goes by displacment instead of speed
 double to_standing_error;
 double setpoint = 6.125;   //the point that is considered to standing postion in inches
 double HP_stop = 50, HI_stop = 20, HD_stop = 0;  //these are the parameters to the PID
-PID StoppingPID(&displacement, &outputSpeed ,&setpoint, HP_stop, HI_stop, HD_stop,P_ON_M, DIRECT);
+PID StoppingPID(&displacement, &outputSpeed ,&setpoint, HP_stop, HI_stop, HD_stop, P_ON_M, DIRECT);
 bool to_standing_status = false; //keeps track if PID is on or off
 
 void setup() 

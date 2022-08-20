@@ -3,12 +3,10 @@
 This README file is designed to go over and explain each major section of the LinearActuatorControlSystem.ino file. Any major new additions
 to the .ino file should also be elaborated in this file. 
 
-
 Section 0 - Libraries (Lines 1-7)
 The first 7 lines of the file are devoted to importing libraries that will be used later in the program. The only library that is not imported
 from the internet is GyroToVelocity.h, which was written by Bruno H. when he was team lead in 2022. GyroToVelocity.h handles all the suit 
 calculations that are specific to our design. I believe the formulas were originally written by Katharine Walters who was main engineer in 2022.
-
 
 Section 1a - Variable definitions (Lines 9-18)
 This section is where the simple Arduino constants such as PIN numbers and PWM values are defined. These constants are distinct from the others because constants or variables 
@@ -26,3 +24,14 @@ Section 1c - Interrupt Arrays (Lines 34-36)
 These arrays are defined as unsigned ints of varying sizes and types. Unsigned ints are the same as ints in that they store a 2 byte value, but they only store positive values
 which doubles the normal range of values. The number in the assignment macro determines how many bits that variable will be, so pwm_start[PWM_NUM] will be an array that stores
 values that can be up to 32 bits large in the positive only.
+
+Section 1d - Gyroscope Objects and Variables (Lines 38-40)
+In Lines 38 and 39, two objects of the class Adafruit_MPU6050 are created which will allow us to assign each gyroscope to its respective object. These objects will allow us to perform
+functions to receive the data from the gyroscope. This is explained in more detail in the Tilt_Sensor_README.txt file found in the github under the Demo-Tutorial folder.
+We also create arrays that will store the values received from the gyroscope after the offsets have been accounted for.
+
+Section 1e - PID variables (45-49)
+Lines 45-47 are used to initialize the variables that we will be using in our PID, and line 48 is where we create the PID controller. The PID controller is created with a constructor,
+more information on constructors can be found here (https://www.w3schools.com/cpp/cpp_constructors.asp)This page (https://playground.arduino.cc/Code/PIDLibraryConstructor/) 
+outlines the parameters that are used in the PID function. The "&" symbol next to the parameters in line 48 means that those parameters are a reference and not a copy, which is 
+useful for saving data. More in depth explanations on references can be found online, I think this video (https://www.youtube.com/watch?v=OCL7mSFCIx0) does a great job at explaining the concept.
