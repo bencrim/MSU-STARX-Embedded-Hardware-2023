@@ -30,8 +30,31 @@ In Lines 38 and 39, two objects of the class Adafruit_MPU6050 are created which 
 functions to receive the data from the gyroscope. This is explained in more detail in the Tilt_Sensor_README.txt file found in the github under the Demo-Tutorial folder.
 We also create arrays that will store the values received from the gyroscope after the offsets have been accounted for.
 
-Section 1e - PID variables (45-49)
+Section 1e - PID variables (Lines 45-49)
 Lines 45-47 are used to initialize the variables that we will be using in our PID, and line 48 is where we create the PID controller. The PID controller is created with a constructor,
 more information on constructors can be found here (https://www.w3schools.com/cpp/cpp_constructors.asp)This page (https://playground.arduino.cc/Code/PIDLibraryConstructor/) 
 outlines the parameters that are used in the PID function. The "&" symbol next to the parameters in line 48 means that those parameters are a reference and not a copy, which is 
 useful for saving data. More in depth explanations on references can be found online, I think this video (https://www.youtube.com/watch?v=OCL7mSFCIx0) does a great job at explaining the concept.
+
+Section 2a - Baud rate (Line 65)
+In this line, we set the baud rate to 9600, which is the standard baud rate for Arduino boards. The baud rate is another way of saying how many bits are being sent per second for serial data
+transmission. We set the rate at 9600 because anything more can start causing problems.
+
+Section 2b -  Pin Modes (Lines 69-77)
+In this section, we set all the I/O pins we use on the Arduino Due to either input or output. We also set pin 22 to be HIGH right away, this is changed later 
+depending on the state of the PID system (This system is still a work in progress).
+
+Section 2c - Interrupts (Lines 80-81)
+In these two lines, the interrupts are created that will trigger each time the speed or position of the linear actuator changes. More specifically, they will trigger any time the pin 
+assigned to the first parameter changes from high to low or low to high. We use the enableInterrupt function in place of the attachInterrupt function because enableInterrupt is faster.
+
+Section 2d - Soft stop PID (Lines 84-86)
+### WIP ###
+
+Section 2e - Load compensator PID (Lines 88-92)
+### WIP ###
+
+Section 2f - Hip or knee geometry (Line 94)
+### WIP ###
+
+Section 2g - Gyroscope settings and initializations (Lines 96-124)

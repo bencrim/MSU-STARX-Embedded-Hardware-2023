@@ -142,7 +142,7 @@ void loop()
   Mdirection(corrected_X[1]);
   loadCompensator.Compute();
   analogWrite(ANV,outputSpeed);
-  Serial.print(corrected_X[1]);Serial.print("   "); Serial.print(displacement);Serial.print("   ");Serial.print(currentSpeed);Serial.print("   ");Serial.println(desiredSpeed);
+  Serial.print("   CX:");Serial.print(corrected_X[1]);Serial.print("   DP:"); Serial.print(displacement);Serial.print("   CS:");Serial.print(currentSpeed);Serial.print("   DS:");Serial.println(desiredSpeed);
 
 //////////////////////// TO standing implementation
   if((digitalRead(TO_STANDING))) toStanding();
@@ -217,7 +217,7 @@ void pwm_read_values()
 
 void calc_input(uint8_t channel, uint8_t input_pin) //Does the math for the PWM data
 {
-  if (digitalRead(input_pin) == HIGH) //Measures how long the PWM is that its peak
+  if (digitalRead(input_pin) == HIGH) //Measures how long the PWM is at its peak
   {
     pwm_start[channel] = micros(); //Micros returns the number of microseconds since the board began running
   } 
