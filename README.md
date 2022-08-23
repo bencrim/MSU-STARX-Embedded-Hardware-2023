@@ -1,5 +1,7 @@
 # MSU STARX Embedder Hardware Team GitHub 2023
 
+![STARX_One_Color_web_Logo](https://user-images.githubusercontent.com/84113744/185766462-93bb988e-c679-43eb-8129-3eeda95d2387.png)
+
 Below is a beginner walkthrough on how to install the Arduino IDE and the libraries we will be using in it.
 
 1. Download and install Arduino IDE (https://www.arduino.cc/en/software)
