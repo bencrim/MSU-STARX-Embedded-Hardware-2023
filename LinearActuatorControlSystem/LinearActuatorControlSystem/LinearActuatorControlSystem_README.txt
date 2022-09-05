@@ -8,6 +8,8 @@ The first 7 lines of the file are devoted to importing libraries that will be us
 from the internet is GyroToVelocity.h, which was written by Bruno H. when he was team lead in 2022. GyroToVelocity.h handles all the suit 
 calculations that are specific to our design. I believe the formulas were originally written by Katharine Walters who was main engineer in 2022.
 
+
+
 Section 1a - Variable definitions (Lines 9-18)
 This section is where the simple Arduino constants such as PIN numbers and PWM values are defined. These constants are distinct from the others because constants or variables 
 defined with the #define macro are constant across all files and are not restricted by scope. This means that if LinearActuatorControlSystem.ino were to be imported 
@@ -32,9 +34,11 @@ We also create arrays that will store the values received from the gyroscope aft
 
 Section 1e - PID variables (Lines 45-49)
 Lines 45-47 are used to initialize the variables that we will be using in our PID, and line 48 is where we create the PID controller. The PID controller is created with a constructor,
-more information on constructors can be found here (https://www.w3schools.com/cpp/cpp_constructors.asp)This page (https://playground.arduino.cc/Code/PIDLibraryConstructor/) 
+more information on constructors can be found here (https://www.w3schools.com/cpp/cpp_constructors.asp). This page (https://playground.arduino.cc/Code/PIDLibraryConstructor/) 
 outlines the parameters that are used in the PID function. The "&" symbol next to the parameters in line 48 means that those parameters are a reference and not a copy, which is 
 useful for saving data. More in depth explanations on references can be found online, I think this video (https://www.youtube.com/watch?v=OCL7mSFCIx0) does a great job at explaining the concept.
+
+
 
 Section 2a - Baud rate (Line 65)
 In this line, we set the baud rate to 9600, which is the standard baud rate for Arduino boards. The baud rate is another way of saying how many bits are being sent per second for serial data
@@ -55,7 +59,16 @@ Section 2e - Load compensator PID (Lines 88-92)
 ### WIP ###
 
 Section 2f - Hip or knee geometry (Line 94)
-### WIP ###
+This is the location where we decide which actuator calculations we will be using, either HIP or KNEE. These calculations are done in the GyroToVelocity library we imported earlier.
+The main concept of the calculations is that we can confidently predict what the lower leg should be doing based on the angular velocity and location of the upper leg. 
+This is why we use gyroscopes.
 
 Section 2g - Gyroscope settings and initializations (Lines 96-124)
-### WIP ###
+The if statements in this section of the program are used to catch whether the gyroscopes are connected and working well. We first use the mpu.begin with the gyroscope address as a parameter,
+this will catch if there is an error returning data from the gyroscope. If all works well then the LED on the board won't light up. Next, we set up some settings for the gyroscope. These can be
+changed depending on what you need the gyroscope to do, but the way we have it now should be working. Lines 106-122 are the same except it tests and sets the other gyroscope. The offsetSwitch is 
+where we tell the program which unique gyroscope is being used so that we can adjust for it's specific offset values.
+
+
+
+Section 3a
