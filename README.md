@@ -12,3 +12,4 @@ Below is a beginner walkthrough on how to install the Arduino IDE and the librar
 6. After waiting for the folders to copy over, open the Arduino IDE and then navigate to the "Manage Libraries" window under "Tools" at the top of the IDE. This might take time to load.
 7. Once the Library Manager finishes loading, change the type to "Updatable" in the "Type" dropdown menu in the top left. Update any libraries that need to be updated. This process can take some time.
 8. Now you should have all the libraries currently in use by the team. Any new libraries added to the GitHub will have to be added to your Arduino library folder (Steps 4-6).
+9. Make sure to check out Bruno's Compendium which should be in the repository you downloaded. He goes over the entire system in detail so it's great for new members.
