@@ -120,7 +120,7 @@ void setup()
   mpu1.setAccelerometerRange(MPU6050_RANGE_8_G);
   mpu1.setGyroRange(MPU6050_RANGE_1000_DEG);
   mpu1.setFilterBandwidth(MPU6050_BAND_21_HZ);
-  offsetSwitch(0,1); //Check the gyro number connected to the arduino
+  offsetSwitch(0,8); //Check the gyro number connected to the arduino (0 or 1, specific gyro)
   offsetSwitch(1,5);
 }
 
