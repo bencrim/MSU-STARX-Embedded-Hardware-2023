@@ -10,12 +10,13 @@
 #define PWM_NUM  2 //number of PWM signals
 #define PWMS  0 //speed is stored in the 0 position of the array
 #define PWMP  1 //position is stored in the 1 position of the array
-#define PWMS_INPUT  A0 //analog pin for the speed reading
-#define PWMP_INPUT  A1 //analog pin for the position reading
-#define ANV 5 //analog voltage speed control pin
-#define IN1 2 //direction of actuation
-#define IN2 3 //direction of actuation
+#define PWMS_INPUT  A0 //analog pin for the speed reading (VIOLET)
+#define PWMP_INPUT  A1 //analog pin for the position reading (ORANGE)
+#define ANV 5 //analog voltage speed control pin (RED)
+#define IN1 2 //direction of actuation (BLUE)
+#define IN2 3 //direction of actuation (GRAY)
 #define TO_STANDING 53
+//GROUND COLORS (BLACK, PINK, TAN)
 //zero rate offset in radians/s
 //recalibrate gyros periodically, probably once a month or before testing
 const double gyro1[] = {-0.0213, -0.0192, -0.03};
@@ -63,11 +64,12 @@ void setup()
 {
   //begin serial monitor
   Serial.begin(SERIAL_PORT_SPEED); //from 9600 to 115200
-
+  Serial.print("Setup start\n");
 
   //establish all pins I/O
-  pinMode(PWMS_INPUT, INPUT);
-  pinMode(PWMP_INPUT, INPUT);
+  Serial.print("Pin mode start\n");
+  pinMode(PWMS_INPUT,INPUT);
+  pinMode(PWMP_INPUT,INPUT);
   pinMode(TO_STANDING,INPUT);
   pinMode(ANV,OUTPUT);
   pinMode(IN1,OUTPUT);
@@ -75,24 +77,34 @@ void setup()
   pinMode(22,OUTPUT); //dummy pin
   pinMode(LED_BUILTIN,OUTPUT);
   digitalWrite(22,HIGH); //always HIGH
+  Serial.print("Pin mode end\n");
 
   //interrupts used to read the linear actuator feedback
+  Serial.print("interrupt start\n");
   enableInterrupt(PWMS_INPUT, calc_speed, CHANGE);
   enableInterrupt(PWMP_INPUT, calc_position, CHANGE); 
+  Serial.print("interrupt end\n");
   //PI Controller for sending to soft stop
   //placed here as I will toggle the High Pin when turning off this PID
+  Serial.print("StoppingPID start\n");
   StoppingPID.SetMode(MANUAL);
   StoppingPID.SetOutputLimits(0,255);
   StopPID_status(true); // turn off this PID
+  Serial.print("StoppingPID end\n");
   
   //PI Controller for load compensator
+  Serial.print("Load compensator start\n");
   pwm_read_values(); 
   desiredSpeed = 0;
   loadCompensator.SetMode(AUTOMATIC);
   loadCompensator.SetOutputLimits(0,255);
+  Serial.print("Load compensator end\n");
 
-  HorK(HIP); //Hip or Knee geometry
+  Serial.print("HorK start\n");
+  HorK(KNEE); //Hip or Knee geometry
+  Serial.print("HorK end\n");
   //Checks for gyroscope
+  Serial.print("mpu start\n");
   if (!mpu.begin(0x69)) 
   {
     digitalWrite(LED_BUILTIN,HIGH); //built in led high means the arduino failed to recognize the gyro
@@ -106,46 +118,63 @@ void setup()
   mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
   mpu.setGyroRange(MPU6050_RANGE_1000_DEG);
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
-
-  if (!mpu1.begin(0x68)) 
-  {
-    digitalWrite(LED_BUILTIN,HIGH); //built in led high means the arduino failed to recognize the gyro
-    while (1) 
-    {
-      delay(10);
-    }
-  }
-  else  digitalWrite(LED_BUILTIN,LOW); //led low means gyro is connected properly
-  //range settings
-  mpu1.setAccelerometerRange(MPU6050_RANGE_8_G);
-  mpu1.setGyroRange(MPU6050_RANGE_1000_DEG);
-  mpu1.setFilterBandwidth(MPU6050_BAND_21_HZ);
+  Serial.print("mpu end\n");
+  Serial.print("mpu1 start\n");
+  //if (!mpu1.begin(0x68)) 
+  //{
+  //  digitalWrite(LED_BUILTIN,HIGH); //built in led high means the arduino failed to recognize the gyro
+  //  while (1) 
+  //  {
+  //    delay(10);
+  //  }
+  //}
+  //else  digitalWrite(LED_BUILTIN,LOW); //led low means gyro is connected properly
+  ////range settings
+  //mpu1.setAccelerometerRange(MPU6050_RANGE_8_G);
+  //mpu1.setGyroRange(MPU6050_RANGE_1000_DEG);
+  //mpu1.setFilterBandwidth(MPU6050_BAND_21_HZ);
+  Serial.print("mpu1 end\n");
   offsetSwitch(0,8); //Check the gyro number connected to the arduino (0 or 1, specific gyro)
   offsetSwitch(1,5);
+  Serial.print("Setup end\n");
 }
 
 void loop() 
 {
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
-
+  //Serial.print("loop start\n");
+  //sensors_event_t a, g, temp;
+  //mpu.getEvent(&a, &g, &temp);
   
+  //Serial.print("sensors_event_t start\n");
   sensors_event_t a1, g1, temp1;
   mpu.getEvent(&a1, &g1, &temp1);
+  //Serial.print("sensors_event_t end\n");
   
   //Sets the gyro value to 0 if it is below the threshold
+  //Serial.print("threshold start\n");
   if(abs(g1.gyro.x - X_OFFSET[1]) <= 0.3)  corrected_X[1] = 0;
   else  corrected_X[1] = g1.gyro.x - X_OFFSET[1];   
+  //Serial.print("threshold end\n");
+  //Serial.print("pwm read values start\n");
   pwm_read_values();
+  //Serial.print("pwm read values end\n");
+  //Serial.print("desired speed start\n");
   desiredSpeed = abs(geometry(corrected_X[1], displacement));
   desiredSpeed2 = geometry(corrected_X[1], displacement);
+  //Serial.print("desired speed end\n");
+  //Serial.print("Mdirection start\n");
   Mdirection(corrected_X[1]);
+  //Serial.print("Mdirection end\n");
+  //Serial.print("Load compensator start\n");
   loadCompensator.Compute();
+  //Serial.print("Load compensator end\n");
+  //Serial.print("Analong write start\n");
   analogWrite(ANV,outputSpeed);
+  //Serial.print("Analog write end\n");
   Serial.print("   CX:");Serial.print(corrected_X[1]);Serial.print("   DP:"); Serial.print(displacement);Serial.print("   CS:");Serial.print(currentSpeed);Serial.print("   DS:");Serial.println(desiredSpeed);
 
 //////////////////////// TO standing implementation
-  if((digitalRead(TO_STANDING))) toStanding();
+  //if((digitalRead(TO_STANDING))) toStanding();
 ////////////////////////
 }
 void toStanding()
