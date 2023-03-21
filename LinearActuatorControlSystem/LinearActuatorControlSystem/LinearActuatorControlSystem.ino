@@ -1,7 +1,7 @@
 //Libraries
 #include <PID_v1.h>     //PID library
 #include <EnableInterrupt.h>  //library that enables to read pwm values
-#include <Adafruit_MPU6050.h> //gyro library
+#include <Adafruit_LSM6DSOX.h> //gyro library
 #include <Adafruit_Sensor.h>  //library to run adafruit sensors
 #include <Wire.h>   //library that enables serail communications
 #include <GyroToVelocity.h>   //geometry functions for HIP and KNEE actuators
@@ -36,8 +36,8 @@ uint32_t pwm_start[PWM_NUM]; // stores the time when PWM square wave begins
 uint16_t pwm_values[PWM_NUM]; //stores the width of the PWM pulse in microseconds
 volatile uint16_t pwm_shared[PWM_NUM]; //array used in the interrupt routine to hold the pulse width values
 
-Adafruit_MPU6050 mpu; //gyro sensor
-Adafruit_MPU6050 mpu1;
+Adafruit_LSM6DSOX lsm; //gyro sensor
+Adafruit_LSM6DSOX lsm1;
 double corrected_X[2], corrected_Y[2], corrected_Z[2]; //variables that store the angular speed after the offset has been applied
 
 bool lock_in_place = false;
@@ -104,8 +104,8 @@ void setup()
   HorK(KNEE); //Hip or Knee geometry
   Serial.print("HorK end\n");
   //Checks for gyroscope
-  Serial.print("mpu start\n");
-  if (!mpu.begin(0x69)) 
+  Serial.print("lsm start\n");
+  if (!lsm.begin_I2C())
   {
     digitalWrite(LED_BUILTIN,HIGH); //built in led high means the arduino failed to recognize the gyro
     while (1) 
@@ -115,9 +115,8 @@ void setup()
   }
   else  digitalWrite(LED_BUILTIN,LOW); //led low means gyro is connected properly
   //range settings
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-  mpu.setGyroRange(MPU6050_RANGE_1000_DEG);
-  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+  lsm.setAccelRange(LSM6DS_ACCEL_RANGE_8_G);
+  lsm.setGyroRange(LSM6DS_GYRO_RANGE_1000_DPS);
   Serial.print("mpu end\n");
   Serial.print("mpu1 start\n");
   //if (!mpu1.begin(0x68)) 
@@ -147,7 +146,7 @@ void loop()
   
   //Serial.print("sensors_event_t start\n");
   sensors_event_t a1, g1, temp1;
-  mpu.getEvent(&a1, &g1, &temp1);
+  lsm.getEvent(&a1, &g1, &temp1);
   //Serial.print("sensors_event_t end\n");
   
   //Sets the gyro value to 0 if it is below the threshold
